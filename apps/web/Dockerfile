@@ -22,8 +22,11 @@ ENV NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=$NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY apps/web/package.json apps/web/
+COPY packages/ui/package.json packages/ui/
 COPY apps/web apps/web
+COPY packages/ui packages/ui
 RUN pnpm install --filter web... --frozen-lockfile
+RUN pnpm --filter @subfy/ui... run build
 RUN pnpm --filter web... run build
 
 # Create a production-only bundle with node_modules flattened for runtime
