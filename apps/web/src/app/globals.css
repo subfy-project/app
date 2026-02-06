@@ -104,6 +104,22 @@
   .mobile-sheet[data-state="closed"] {
     animation: slide-out-left 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
   }
+
+  /* ── Modal overlay animation ──────────────────────── */
+  .modal-overlay[data-state="open"] {
+    animation: fade-in 0.2s ease-out forwards;
+  }
+  .modal-overlay[data-state="closed"] {
+    animation: fade-out 0.15s ease-in forwards;
+  }
+
+  /* ── Modal content animation ──────────────────────── */
+  .modal-content[data-state="open"] {
+    animation: modal-in 0.25s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  }
+  .modal-content[data-state="closed"] {
+    animation: modal-out 0.2s ease-in forwards;
+  }
 }
 
 @keyframes fade-in {
@@ -121,4 +137,12 @@
 @keyframes slide-out-left {
   from { transform: translateX(0); }
   to   { transform: translateX(-100%); }
+}
+@keyframes modal-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+@keyframes modal-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to   { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
 }

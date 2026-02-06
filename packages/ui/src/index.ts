@@ -40,6 +40,18 @@ export {
   type RevenueChartDataPoint,
 } from "./components/revenue-chart";
 
+/* ── Feedback / Overlays ─────────────────────────────── */
+export {
+  Modal,
+  ModalTrigger,
+  ModalContent,
+  ModalHeader,
+  ModalTitle,
+  ModalDescription,
+  ModalFooter,
+} from "./components/modal";
+export { Pagination, type PaginationProps } from "./components/pagination";
+
 /* ── Layout ───────────────────────────────────────────── */
 export {
   Sidebar,

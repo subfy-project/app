@@ -23,6 +23,9 @@ import {
   DollarSign,
   Wallet,
   LayoutGrid,
+  Code,
+  Settings,
+  Plus,
 } from "lucide-react";
 
 export default function DashboardOverview() {
@@ -103,9 +106,11 @@ export default function DashboardOverview() {
           </CardContent>
           <CardFooter>
             <Button variant="primary" className="flex-1">
+              <Plus />
               Create Plan
             </Button>
             <Button variant="outline" className="flex-1">
+              <Code />
               Use API
             </Button>
           </CardFooter>
@@ -145,6 +150,7 @@ export default function DashboardOverview() {
           </CardContent>
           <CardFooter>
             <Button variant="primary" className="flex-1">
+              <Settings />
               Manage your memberships
             </Button>
           </CardFooter>
