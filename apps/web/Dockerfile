@@ -30,7 +30,7 @@ RUN pnpm --filter @subfy/ui... run build
 RUN pnpm --filter web... run build
 
 # Create a production-only bundle with node_modules flattened for runtime
-RUN pnpm --filter web... deploy --prod --legacy /app
+RUN pnpm --filter web deploy --prod --legacy /app
 
 FROM node:20-alpine AS runtime
 WORKDIR /app
