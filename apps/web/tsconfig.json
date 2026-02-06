@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@subfy/ui": ["../../packages/ui/src/index.ts"],
+      "@subfy/ui/*": ["../../packages/ui/src/*"]
     }
   },
   "include": [
