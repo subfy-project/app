@@ -87,6 +87,11 @@ export function Footer() {
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5 font-outfit text-body-xs text-text-secondary">
               Built on
+              <img
+                src="/stellar-xlm-logo.svg"
+                alt="Stellar"
+                className="size-4 brightness-0 invert"
+              />
               <span className="font-semibold text-text-primary">Stellar</span>
             </span>
             <span className="text-dark-500">|</span>

@@ -16,7 +16,11 @@ export function Hero() {
         {/* Trust Badge */}
         <div className="mb-8 flex items-center gap-2">
           <div className="flex items-center gap-1.5 rounded-full border border-success-border bg-success-bg px-3 py-1">
-            <div className="size-2 rounded-full bg-success" />
+            <img
+              src="/stellar-xlm-logo.svg"
+              alt="Stellar"
+              className="size-4 brightness-0 invert"
+            />
             <span className="font-outfit text-body-xs text-success">
               Built on Stellar
             </span>
