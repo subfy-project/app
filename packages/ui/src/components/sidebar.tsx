@@ -190,7 +190,7 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
       >
         <DialogPrimitive.Portal>
           <DialogPrimitive.Overlay className="mobile-overlay fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden" />
-          <DialogPrimitive.Content className="mobile-sheet fixed inset-y-0 left-0 z-50 w-sidebar border-r border-dark-500 bg-neutral-900 shadow-2xl lg:hidden">
+          <DialogPrimitive.Content className="mobile-sheet fixed inset-y-0 left-0 z-50 w-[min(var(--sidebar-width),85vw)] border-r border-dark-500 bg-neutral-900 shadow-2xl lg:hidden">
             <VisuallyHidden.Root>
               <DialogPrimitive.Title>Navigation menu</DialogPrimitive.Title>
             </VisuallyHidden.Root>

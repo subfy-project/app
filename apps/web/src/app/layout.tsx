@@ -25,6 +25,17 @@ const inter = Inter({
 export const metadata = {
   title: "Subfy",
   description: "Subfy — Manage your plans and subscriptions seamlessly.",
+  openGraph: {
+    title: "Subfy",
+    description: "Subfy — Manage your plans and subscriptions seamlessly.",
+    images: ["/header.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Subfy",
+    description: "Subfy — Manage your plans and subscriptions seamlessly.",
+    images: ["/header.png"],
+  },
 };
 
 export default function RootLayout({

@@ -52,7 +52,7 @@ export default function WhitelistPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-950">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-neutral-950">
       {/* Navbar */}
       <nav className="border-b border-dark-500/50 bg-neutral-950/80 backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-8">

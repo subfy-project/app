@@ -46,7 +46,7 @@ export default function WhitelistStatsPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col bg-neutral-950">
+    <div className="flex min-h-screen flex-col overflow-x-hidden bg-neutral-950">
       {/* Navbar */}
       <nav className="border-b border-dark-500/50 bg-neutral-950/80 backdrop-blur-xl">
         <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-8">
@@ -54,11 +54,11 @@ export default function WhitelistStatsPage() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/Logo.svg" alt="Subfy" className="h-7" />
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link href="/whitelist">
               <Button variant="ghost" size="sm">
                 <ArrowLeft className="size-4" />
-                Back to Whitelist
+                <span className="hidden sm:inline">Back to</span> Whitelist
               </Button>
             </Link>
             <Link href="/dashboard">

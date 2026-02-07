@@ -45,7 +45,7 @@ function DashboardLayout({
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   return (
-    <div className="relative min-h-screen bg-neutral-950">
+    <div className="relative min-h-screen overflow-x-hidden bg-neutral-950">
       {/* Sidebar */}
       <Sidebar
         items={sidebarItems}

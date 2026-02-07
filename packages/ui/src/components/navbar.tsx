@@ -57,11 +57,11 @@ function NavbarButton({ link, onNavigate }: NavbarButtonProps) {
       }
       className={cn(
         /* base — h-full fills the navbar, items are centred */
-        "navbar-btn relative flex h-full items-center justify-center rounded-sm font-inter text-[16px] leading-7 text-text-primary transition-all duration-200",
+        "navbar-btn relative flex h-full items-center justify-center rounded-sm font-inter text-[14px] sm:text-[16px] leading-7 text-text-primary transition-all duration-200",
         /* state-dependent */
         link.active
-          ? "px-8"
-          : "border-b-[6px] border-transparent px-7"
+          ? "px-4 sm:px-8"
+          : "border-b-[6px] border-transparent px-3 sm:px-7"
       )}
     >
       {link.label}
@@ -92,7 +92,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     <header
       ref={ref}
       className={cn(
-        "flex h-[60px] shrink-0 items-center overflow-hidden border-b border-dark-500 bg-neutral-900 px-8",
+        "flex h-[60px] shrink-0 items-center overflow-hidden border-b border-dark-500 bg-neutral-900 px-3 sm:px-8",
         className
       )}
       {...props}
@@ -120,7 +120,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         ))}
 
         {/* User section */}
-        <div className="ml-2 flex items-center gap-2 px-4 py-1.5">
+        <div className="ml-1 flex items-center gap-2 px-2 py-1.5 sm:ml-2 sm:px-4">
           {avatarUrl ? (
             <img
               src={avatarUrl}
