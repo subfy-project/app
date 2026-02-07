@@ -11,7 +11,7 @@ RUN pnpm install --filter api... --frozen-lockfile
 RUN pnpm --filter api... run build
 
 # Create a production-only bundle with node_modules flattened for runtime
-RUN pnpm --filter api... deploy --prod --legacy /app
+RUN pnpm --filter @repo/api deploy --prod --legacy /app
 RUN cp -r /workspace/apps/api/dist /app/dist
 
 FROM node:20-alpine AS runtime
