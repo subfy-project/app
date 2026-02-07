@@ -5,13 +5,13 @@ const footerLinks = {
     { label: "Features", href: "#features" },
     { label: "How It Works", href: "#how-it-works" },
     { label: "Use Cases", href: "#use-cases" },
-    { label: "Dashboard", href: "/dashboard" },
+    { label: "Dashboard", href: "/whitelist" },
   ],
   Developers: [
-    { label: "Documentation", href: "#" },
+    { label: "Documentation", href: "https://github.com/subfy-project/app" },
     { label: "SDK Reference", href: "#" },
     { label: "API Endpoints", href: "#" },
-    { label: "GitHub", href: "https://github.com" },
+    { label: "GitHub", href: "https://github.com/subfy-project/app" },
   ],
   Company: [
     { label: "About", href: "#" },

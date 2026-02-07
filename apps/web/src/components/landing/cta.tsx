@@ -30,14 +30,14 @@ export function CTA() {
             </p>
 
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="/dashboard">
+              <Link href="/whitelist">
                 <Button variant="primary" size="lg">
                   Get Started Free
                   <ArrowRight className="size-4" />
                 </Button>
               </Link>
               <a
-                href="https://github.com"
+                href="https://github.com/subfy-project/app"
                 target="_blank"
                 rel="noopener noreferrer"
               >
