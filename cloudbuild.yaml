@@ -6,6 +6,7 @@ substitutions:
   _FIREBASE_PROJECT_ID: ""
   _CORS_ORIGIN: ""
   _NEXT_PUBLIC_API_URL: ""
+  _NEXT_PUBLIC_SITE_URL: ""
 
 options:
   logging: CLOUD_LOGGING_ONLY
@@ -45,6 +46,8 @@ steps:
       - "--tag=gcr.io/$PROJECT_ID/${_WEB_SERVICE}-${_BRANCH}:$SHORT_SHA"
       - "--build-arg"
       - "NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}"
+      - "--build-arg"
+      - "NEXT_PUBLIC_SITE_URL=${_NEXT_PUBLIC_SITE_URL}"
       - "."
   - name: "gcr.io/cloud-builders/docker"
     args:
@@ -62,6 +65,7 @@ steps:
       - "--platform=managed"
       - >-
         --set-env-vars=NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL},
+        NEXT_PUBLIC_SITE_URL=${_NEXT_PUBLIC_SITE_URL},
         NODE_ENV=production
 
 images:
