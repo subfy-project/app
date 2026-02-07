@@ -40,7 +40,7 @@ export function LandingNavbar() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-3 md:flex">
-          <Link href="/whitelist">
+          <Link href="/login">
             <Button variant="ghost" size="sm">
               Sign In
             </Button>
@@ -77,7 +77,7 @@ export function LandingNavbar() {
               </a>
             ))}
             <div className="mt-3 flex flex-col gap-2 border-t border-dark-500/50 pt-4">
-              <Link href="/whitelist">
+              <Link href="/login">
                 <Button variant="ghost" size="sm" className="w-full">
                   Sign In
                 </Button>

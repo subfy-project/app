@@ -22,6 +22,8 @@ export interface DashboardLayoutProps {
   activeHref?: string;
   username?: string;
   avatarUrl?: string;
+  /** Custom slot that replaces the default user section in the navbar */
+  userSlot?: React.ReactNode;
   logo?: React.ReactNode;
   onNavigate?: (href: string) => void;
   sidebarProps?: Partial<SidebarProps>;
@@ -36,6 +38,7 @@ function DashboardLayout({
   activeHref,
   username,
   avatarUrl,
+  userSlot,
   logo,
   onNavigate,
   sidebarProps,
@@ -64,6 +67,7 @@ function DashboardLayout({
           links={navbarLinks}
           username={username}
           avatarUrl={avatarUrl}
+          userSlot={userSlot}
           onMenuToggle={() => setMobileOpen(true)}
           onNavigate={onNavigate}
           {...navbarProps}

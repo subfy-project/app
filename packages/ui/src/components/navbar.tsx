@@ -18,6 +18,8 @@ export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   links?: NavbarLink[];
   username?: string;
   avatarUrl?: string;
+  /** Custom slot that replaces the default user section (e.g. wallet button) */
+  userSlot?: React.ReactNode;
   onMenuToggle?: () => void;
   onNavigate?: (href: string) => void;
 }
@@ -72,8 +74,8 @@ function NavbarButton({ link, onNavigate }: NavbarButtonProps) {
 /* ──────────────────────────────────────────────────────────
  * Navbar
  *
- * overflow-hidden clips the button borders flush with
- * the navbar's own bottom edge.
+ * z-20 ensures dropdowns (e.g. wallet menu) render above
+ * the main content area below the navbar.
  * ──────────────────────────────────────────────────────── */
 
 const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
@@ -83,6 +85,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
       links = defaultNavbarLinks,
       username = "Username",
       avatarUrl,
+      userSlot,
       onMenuToggle,
       onNavigate,
       ...props
@@ -92,7 +95,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     <header
       ref={ref}
       className={cn(
-        "flex h-[60px] shrink-0 items-center overflow-hidden border-b border-dark-500 bg-neutral-900 px-3 sm:px-8",
+        "relative z-20 flex h-[60px] shrink-0 items-center border-b border-dark-500 bg-neutral-900 px-3 sm:px-8",
         className
       )}
       {...props}
@@ -119,23 +122,25 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
           />
         ))}
 
-        {/* User section */}
-        <div className="ml-1 flex items-center gap-2 px-2 py-1.5 sm:ml-2 sm:px-4">
-          {avatarUrl ? (
-            <img
-              src={avatarUrl}
-              alt={username}
-              className="size-7 rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex size-7 items-center justify-center rounded-full bg-dark-500">
-              <User className="size-4 text-text-secondary" />
-            </div>
-          )}
-          <span className="hidden font-inter text-[16px] leading-7 text-text-primary sm:block">
-            {username}
-          </span>
-        </div>
+        {/* User section — render custom slot or default avatar+name */}
+        {userSlot ?? (
+          <div className="ml-1 flex items-center gap-2 px-2 py-1.5 sm:ml-2 sm:px-4">
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt={username}
+                className="size-7 rounded-full object-cover"
+              />
+            ) : (
+              <div className="flex size-7 items-center justify-center rounded-full bg-dark-500">
+                <User className="size-4 text-text-secondary" />
+              </div>
+            )}
+            <span className="hidden font-inter text-[16px] leading-7 text-text-primary sm:block">
+              {username}
+            </span>
+          </div>
+        )}
       </nav>
     </header>
   )

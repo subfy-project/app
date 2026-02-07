@@ -61,7 +61,7 @@ export default function WhitelistStatsPage() {
                 <span className="hidden sm:inline">Back to</span> Whitelist
               </Button>
             </Link>
-            <Link href="/dashboard">
+            <Link href="/login">
               <Button variant="outline" size="sm">
                 Demo
               </Button>

@@ -67,7 +67,7 @@ export default function WhitelistPage() {
                 Stats
               </Button>
             </Link>
-            <Link href="/dashboard">
+            <Link href="/login">
               <Button variant="outline" size="sm">
                 Demo
               </Button>
@@ -177,7 +177,7 @@ export default function WhitelistPage() {
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="/dashboard">
+              <Link href="/login">
                 <Button variant="outline" size="lg">
                   <Rocket className="size-4" />
                   Try the Demo
