@@ -28,6 +28,9 @@ export const metadata = {
   metadataBase: new URL(siteUrl),
   title: "Subfy",
   description: "Subfy — Manage your plans and subscriptions seamlessly.",
+  icons: {
+    icon: "/favicon.ico",
+  },
   openGraph: {
     title: "Subfy",
     description: "Subfy — Manage your plans and subscriptions seamlessly.",
