@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FirebaseService } from '@subfy/firebase';
+import { QueryDocumentSnapshot } from 'firebase-admin/firestore';
 
 const COLLECTION = 'whitelist';
 
@@ -41,7 +42,7 @@ export class WhitelistService {
 
     const snapshot = await col.orderBy('createdAt', 'desc').get();
 
-    const entries = snapshot.docs.map((doc) => ({
+    const entries = snapshot.docs.map((doc: QueryDocumentSnapshot) => ({
       id: doc.id,
       createdAt: doc.data().createdAt as string,
     }));
