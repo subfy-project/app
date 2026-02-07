@@ -29,7 +29,7 @@ export const metadata = {
   title: "Subfy",
   description: "Subfy — Manage your plans and subscriptions seamlessly.",
   icons: {
-    icon: "/favicon.ico",
+    icon: "/favicon.svg",
   },
   openGraph: {
     title: "Subfy",
