@@ -113,4 +113,11 @@ Subfy enables recurring payment models for:
 
 ---
 
+## Soroban Resources
+
+- Contract workspace and scripts: `contracts/` and `scripts/soroban/`
+- Testnet app integration guide: `docs/soroban-testnet-integration.md`
+
+---
+
 **Questions or feedback?** Open an issue or reach out to the development team.
