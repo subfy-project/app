@@ -1,6 +1,8 @@
 import { Sora, Outfit, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { AppProviders } from "@/components/app-providers";
+import { OG_IMAGE_PATH, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/seo";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -23,33 +25,57 @@ const inter = Inter({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
-
-export const metadata = {
-  metadataBase: new URL(siteUrl),
-  title: "Subfy",
-  description: "Subfy — Manage your plans and subscriptions seamlessly.",
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: SITE_NAME,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   icons: {
     icon: "/favicon.svg",
   },
   openGraph: {
-    title: "Subfy",
-    description: "Subfy — Manage your plans and subscriptions seamlessly.",
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    siteName: SITE_NAME,
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
     images: [
       {
-        url: "/header.png",
+        url: OG_IMAGE_PATH,
         width: 1200,
         height: 630,
-        alt: "Subfy",
+        alt: SITE_NAME,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Subfy",
-    description: "Subfy — Manage your plans and subscriptions seamlessly.",
-    images: ["/header.png"],
+    title: SITE_NAME,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE_PATH],
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#09090b",
 };
 
 export default function RootLayout({
@@ -59,7 +85,7 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="fr"
+      lang="en"
       className={`${sora.variable} ${outfit.variable} ${inter.variable}`}
     >
       <body className="font-sora">
