@@ -28,6 +28,7 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   items?: SidebarItem[];
   activeHref?: string;
   logo?: React.ReactNode;
+  projectSlot?: React.ReactNode;
   onNavigate?: (href: string) => void;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
@@ -116,6 +117,7 @@ interface SidebarNavContentProps {
   items: SidebarItem[];
   activeHref?: string;
   logo?: React.ReactNode;
+  projectSlot?: React.ReactNode;
   onNavigate?: (href: string) => void;
 }
 
@@ -123,6 +125,7 @@ function SidebarNavContent({
   items,
   activeHref,
   logo,
+  projectSlot,
   onNavigate,
 }: SidebarNavContentProps) {
   return (
@@ -131,6 +134,12 @@ function SidebarNavContent({
       <div className="flex h-[155px] shrink-0 items-center px-8">
         {logo ?? <DefaultLogo />}
       </div>
+
+      {projectSlot ? (
+        <div className="px-6 pb-4">
+          {projectSlot}
+        </div>
+      ) : null}
 
       {/* Nav items */}
       <nav className="flex flex-1 flex-col">
@@ -158,6 +167,7 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
       items = defaultSidebarItems,
       activeHref,
       logo,
+      projectSlot,
       onNavigate,
       mobileOpen = false,
       onMobileClose,
@@ -179,6 +189,7 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
           items={items}
           activeHref={activeHref}
           logo={logo}
+          projectSlot={projectSlot}
           onNavigate={onNavigate}
         />
       </aside>
@@ -202,6 +213,7 @@ const Sidebar = React.forwardRef<HTMLElement, SidebarProps>(
               items={items}
               activeHref={activeHref}
               logo={logo}
+              projectSlot={projectSlot}
               onNavigate={(href) => {
                 onNavigate?.(href);
                 onMobileClose?.();

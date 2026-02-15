@@ -88,6 +88,9 @@
                   "u32": 1
                 },
                 {
+                  "string": "Starter"
+                },
+                {
                   "u32": 30
                 },
                 {
@@ -290,6 +293,14 @@
                     },
                     "val": {
                       "u32": 1
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "name"
+                    },
+                    "val": {
+                      "string": "Starter"
                     }
                   },
                   {

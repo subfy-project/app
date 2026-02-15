@@ -66,6 +66,9 @@
                   "u32": 1
                 },
                 {
+                  "string": "Starter"
+                },
+                {
                   "u32": 30
                 },
                 {
@@ -94,6 +97,9 @@
                   "u32": 2
                 },
                 {
+                  "string": "Growth"
+                },
+                {
                   "u32": 30
                 },
                 {
@@ -120,6 +126,9 @@
                 },
                 {
                   "u32": 3
+                },
+                {
+                  "string": "Scale"
                 },
                 {
                   "u32": 30
@@ -423,6 +432,14 @@
                   },
                   {
                     "key": {
+                      "symbol": "name"
+                    },
+                    "val": {
+                      "string": "Starter"
+                    }
+                  },
+                  {
+                    "key": {
                       "symbol": "period_ledgers"
                     },
                     "val": {
@@ -483,6 +500,14 @@
                   },
                   {
                     "key": {
+                      "symbol": "name"
+                    },
+                    "val": {
+                      "string": "Growth"
+                    }
+                  },
+                  {
+                    "key": {
                       "symbol": "period_ledgers"
                     },
                     "val": {
@@ -539,6 +564,14 @@
                     },
                     "val": {
                       "u32": 3
+                    }
+                  },
+                  {
+                    "key": {
+                      "symbol": "name"
+                    },
+                    "val": {
+                      "string": "Scale"
                     }
                   },
                   {

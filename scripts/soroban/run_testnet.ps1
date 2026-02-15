@@ -6,6 +6,7 @@ param(
   [string]$TokenAlias = "sb_pay_token",
   [string]$SubscriptionAlias = "sb_subscription",
   [int]$PlanId = 1,
+  [string]$PlanName = "Starter",
   [int]$PeriodLedgers = 30,
   [long]$PriceStroops = 1000000
 )
@@ -63,6 +64,7 @@ stellar contract invoke `
   create-plan `
   --caller $ADMIN_ADDR `
   --plan-id $PlanId `
+  --name $PlanName `
   --period-ledgers $PeriodLedgers `
   --price-stroops $PriceStroops | Out-Null
 

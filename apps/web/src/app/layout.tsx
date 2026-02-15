@@ -1,5 +1,6 @@
 import { Sora, Outfit, Inter } from "next/font/google";
 import "./globals.css";
+import { AppProviders } from "@/components/app-providers";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -61,7 +62,9 @@ export default function RootLayout({
       lang="fr"
       className={`${sora.variable} ${outfit.variable} ${inter.variable}`}
     >
-      <body className="font-sora">{children}</body>
+      <body className="font-sora">
+        <AppProviders>{children}</AppProviders>
+      </body>
     </html>
   );
 }

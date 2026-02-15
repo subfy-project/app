@@ -10,9 +10,11 @@
     "lint": "eslint .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "soroban:deploy": "node ./scripts/deploy-contract.mjs"
   },
   "dependencies": {
+    "@google-cloud/tasks": "^5.5.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",

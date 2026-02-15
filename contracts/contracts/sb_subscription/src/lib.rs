@@ -3,7 +3,7 @@
 use core::cmp::min;
 use soroban_sdk::{
     contract, contracterror, contractimpl, contracttype, panic_with_error, token, Address, Env,
-    Vec,
+    String, Vec,
 };
 
 const INSTANCE_LIFETIME_THRESHOLD: u32 = 100_000;
@@ -50,6 +50,7 @@ pub enum DataKey {
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct Plan {
     pub id: u32,
+    pub name: String,
     pub period_ledgers: u32,
     pub price_stroops: i128,
     pub active: bool,
@@ -189,7 +190,14 @@ impl SbSubscription {
         bump_instance_ttl(&env);
     }
 
-    pub fn create_plan(env: Env, caller: Address, plan_id: u32, period_ledgers: u32, price_stroops: i128) {
+    pub fn create_plan(
+        env: Env,
+        caller: Address,
+        plan_id: u32,
+        name: String,
+        period_ledgers: u32,
+        price_stroops: i128,
+    ) {
         caller.require_auth();
         assert_admin(&env, &caller);
 
@@ -207,6 +215,7 @@ impl SbSubscription {
 
         let plan = Plan {
             id: plan_id,
+            name,
             period_ledgers,
             price_stroops,
             active: true,

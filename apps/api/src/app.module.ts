@@ -5,6 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { WhitelistModule } from './whitelist/whitelist.module';
 import { AuthModule } from './auth/auth.module';
+import { ProjectsModule } from './projects/projects.module';
+import { DeploymentsModule } from './deployments/deployments.module';
+import { BillingModule } from './billing/billing.module';
+import { SorobanModule } from './soroban/soroban.module';
 
 @Module({
   imports: [
@@ -14,6 +18,10 @@ import { AuthModule } from './auth/auth.module';
     }),
     WhitelistModule,
     AuthModule,
+    ProjectsModule,
+    DeploymentsModule,
+    BillingModule,
+    SorobanModule,
   ],
   controllers: [AppController],
   providers: [AppService],

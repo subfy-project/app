@@ -1,7 +1,10 @@
 #![cfg(test)]
 
 use crate::{SbSubscription, SbSubscriptionClient};
-use soroban_sdk::{testutils::{Address as _, Ledger as _}, token, Address, Env};
+use soroban_sdk::{
+    testutils::{Address as _, Ledger as _},
+    token, Address, Env, String,
+};
 
 #[test]
 fn full_subscription_lifecycle() {
@@ -20,10 +23,11 @@ fn full_subscription_lifecycle() {
     token_admin_client.mint(&user, &10_000_000);
 
     client.init(&admin, &token.address(), &treasury);
-    client.create_plan(&admin, &1, &30, &1_000_000);
+    client.create_plan(&admin, &1, &String::from_str(&env, "Starter"), &30, &1_000_000);
 
     let plan = client.get_plan(&1);
     assert!(plan.active);
+    assert_eq!(plan.name, String::from_str(&env, "Starter"));
     assert_eq!(plan.period_ledgers, 30);
     assert_eq!(plan.price_stroops, 1_000_000);
 
@@ -87,7 +91,13 @@ fn non_admin_cannot_create_plan() {
 
     client.init(&admin, &token.address(), &treasury);
 
-    let err = client.try_create_plan(&user, &1, &30, &500_000);
+    let err = client.try_create_plan(
+        &user,
+        &1,
+        &String::from_str(&env, "Starter"),
+        &30,
+        &500_000,
+    );
     assert!(err.is_err());
 }
 
@@ -106,7 +116,7 @@ fn cannot_subscribe_to_inactive_plan() {
     token_admin_client.mint(&user, &5_000_000);
 
     client.init(&admin, &token.address(), &treasury);
-    client.create_plan(&admin, &1, &30, &1_000_000);
+    client.create_plan(&admin, &1, &String::from_str(&env, "Starter"), &30, &1_000_000);
     client.set_plan_status(&admin, &1, &false);
 
     let err = client.try_subscribe(&user, &1);
@@ -129,7 +139,7 @@ fn renew_requires_next_due_ledger_and_allowance() {
     token_admin_client.mint(&user, &8_000_000);
 
     client.init(&admin, &token.address(), &treasury);
-    client.create_plan(&admin, &7, &15, &2_000_000);
+    client.create_plan(&admin, &7, &String::from_str(&env, "Pro"), &15, &2_000_000);
     client.subscribe(&user, &7);
 
     // Renew cannot happen before due ledger.
@@ -159,9 +169,9 @@ fn list_plans_and_subscriptions_are_paginated() {
     let token_admin_client = token::StellarAssetClient::new(&env, &token.address());
 
     client.init(&admin, &token.address(), &treasury);
-    client.create_plan(&admin, &1, &30, &1_000_000);
-    client.create_plan(&admin, &2, &30, &2_000_000);
-    client.create_plan(&admin, &3, &30, &3_000_000);
+    client.create_plan(&admin, &1, &String::from_str(&env, "Starter"), &30, &1_000_000);
+    client.create_plan(&admin, &2, &String::from_str(&env, "Growth"), &30, &2_000_000);
+    client.create_plan(&admin, &3, &String::from_str(&env, "Scale"), &30, &3_000_000);
 
     let first_page_plans = client.list_plans(&0, &2);
     assert_eq!(first_page_plans.len(), 2);

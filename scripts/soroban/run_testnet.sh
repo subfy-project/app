@@ -8,6 +8,7 @@ TREASURY="${TREASURY:-treasury}"
 TOKEN_ALIAS="${TOKEN_ALIAS:-sb_pay_token}"
 SUBSCRIPTION_ALIAS="${SUBSCRIPTION_ALIAS:-sb_subscription}"
 PLAN_ID="${PLAN_ID:-1}"
+PLAN_NAME="${PLAN_NAME:-Starter}"
 PERIOD_LEDGERS="${PERIOD_LEDGERS:-30}"
 PRICE_STROOPS="${PRICE_STROOPS:-1000000}"
 
@@ -63,6 +64,7 @@ stellar contract invoke \
   create-plan \
   --caller "$ADMIN_ADDR" \
   --plan-id "$PLAN_ID" \
+  --name "$PLAN_NAME" \
   --period-ledgers "$PERIOD_LEDGERS" \
   --price-stroops "$PRICE_STROOPS" >/dev/null
 
