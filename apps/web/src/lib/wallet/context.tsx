@@ -16,6 +16,10 @@ import {
   requestChallenge,
   verifyWithTransaction,
 } from "../api/auth";
+import {
+  accountExistsOnTestnet,
+  fundAccountViaFriendbot,
+} from "../stellar-testnet";
 
 /* ── Storage keys ──────────────────────────────────── */
 const LS_TOKEN = "subfy_token";
@@ -38,9 +42,20 @@ interface WalletContextValue extends WalletState {
 
 const WalletContext = createContext<WalletContextValue | null>(null);
 
+/* ── Provider props ───────────────────────────────── */
+
+export interface WalletProviderProps {
+  children: React.ReactNode;
+  /**
+   * When the connected account doesn't exist on Stellar testnet, this is called.
+   * Return "fund" to fund via Friendbot and continue, "cancel" to abort.
+   */
+  onAccountNotFound?: (address: string) => Promise<"fund" | "cancel">;
+}
+
 /* ── Provider ──────────────────────────────────────── */
 
-export function WalletProvider({ children }: { children: React.ReactNode }) {
+export function WalletProvider({ children, onAccountNotFound }: WalletProviderProps) {
   const [state, setState] = useState<WalletState>(INITIAL_WALLET_STATE);
   const [wallets, setWallets] = useState<ISupportedWallet[]>([]);
   const [loadingWallets, setLoadingWallets] = useState(true);
@@ -95,57 +110,88 @@ export function WalletProvider({ children }: { children: React.ReactNode }) {
 
   /* ── Connect ─────────────────────────────────────── */
 
-  const connect = useCallback(async (walletId: string) => {
-    setState((s) => ({ ...s, connecting: true, error: null }));
+  const connect = useCallback(
+    async (walletId: string) => {
+      setState((s) => ({ ...s, connecting: true, error: null }));
 
-    try {
-      const kit = getKit();
+      try {
+        const kit = getKit();
 
-      // 1. Select the wallet module
-      kit.setWallet(walletId);
+        // 1. Select the wallet module
+        kit.setWallet(walletId);
 
-      // 2. Request public key → clean "Connection Request" popup
-      const { address } = await kit.getAddress();
+        // 2. Request public key → clean "Connection Request" popup
+        const { address } = await kit.getAddress();
 
-      // 3. Request challenge from backend
-      const challenge = await requestChallenge(address);
+        // 3. Check if account exists on Stellar testnet
+        const exists = await accountExistsOnTestnet(address);
+        if (!exists) {
+          const choice = await onAccountNotFound?.(address);
+          if (choice === "cancel" || choice === undefined) {
+            setState((s) => ({
+              ...s,
+              connecting: false,
+              error:
+                choice === undefined
+                  ? "This account doesn't exist on Stellar testnet."
+                  : null,
+            }));
+            return;
+          }
+          if (choice === "fund") {
+            const funded = await fundAccountViaFriendbot(address);
+            if (!funded) {
+              setState((s) => ({
+                ...s,
+                connecting: false,
+                error: "Failed to fund account via Friendbot. Please try again.",
+              }));
+              return;
+            }
+          }
+        }
 
-      // 4. Sign the SEP-10 challenge transaction
-      const { signedTxXdr } = await kit.signTransaction(
-        challenge.transaction,
-        {
-          address,
-          networkPassphrase: challenge.networkPassphrase,
-        },
-      );
+        // 4. Request challenge from backend
+        const challenge = await requestChallenge(address);
 
-      // 5. Verify with backend → get JWT
-      const { token } = await verifyWithTransaction(address, signedTxXdr);
+        // 5. Sign the SEP-10 challenge transaction
+        const { signedTxXdr } = await kit.signTransaction(
+          challenge.transaction,
+          {
+            address,
+            networkPassphrase: challenge.networkPassphrase,
+          },
+        );
 
-      // 6. Persist session
-      localStorage.setItem(LS_TOKEN, token);
-      localStorage.setItem(LS_PUBLIC_KEY, address);
-      localStorage.setItem(LS_WALLET_ID, walletId);
+        // 6. Verify with backend → get JWT
+        const { token } = await verifyWithTransaction(address, signedTxXdr);
 
-      setState({
-        walletId,
-        publicKey: address,
-        token,
-        connecting: false,
-        error: null,
-      });
-    } catch (err: unknown) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "An error occurred while connecting the wallet";
-      setState((s) => ({
-        ...s,
-        connecting: false,
-        error: message,
-      }));
-    }
-  }, []);
+        // 7. Persist session
+        localStorage.setItem(LS_TOKEN, token);
+        localStorage.setItem(LS_PUBLIC_KEY, address);
+        localStorage.setItem(LS_WALLET_ID, walletId);
+
+        setState({
+          walletId,
+          publicKey: address,
+          token,
+          connecting: false,
+          error: null,
+        });
+      } catch (err: unknown) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "An error occurred while connecting the wallet";
+        setState((s) => ({
+          ...s,
+          connecting: false,
+          error: message,
+        }));
+      }
+    },
+    [onAccountNotFound],
+  );
 
   /* ── Disconnect ──────────────────────────────────── */
 

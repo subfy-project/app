@@ -1,8 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@subfy/ui";
+import {
+  Button,
+  Modal,
+  ModalContent,
+  ModalDescription,
+  ModalFooter,
+  ModalHeader,
+  ModalTitle,
+} from "@subfy/ui";
 import { Loader2, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { WalletProvider, useWallet } from "@/lib/wallet";
@@ -66,8 +74,26 @@ function LoginContent() {
  * ──────────────────────────────────────────────────────── */
 
 export default function LoginPage() {
+  const [fundModal, setFundModal] = useState<{
+    address: string;
+    resolve: (choice: "fund" | "cancel") => void;
+  } | null>(null);
+
+  const onAccountNotFound = useCallback((address: string) => {
+    return new Promise<"fund" | "cancel">((resolve) => {
+      setFundModal({ address, resolve });
+    });
+  }, []);
+
+  const handleFundChoice = useCallback((choice: "fund" | "cancel") => {
+    setFundModal((prev) => {
+      prev?.resolve(choice);
+      return null;
+    });
+  }, []);
+
   return (
-    <WalletProvider>
+    <WalletProvider onAccountNotFound={onAccountNotFound}>
       <div className="flex min-h-screen flex-col overflow-x-hidden bg-neutral-950">
         {/* Navbar */}
         <nav className="border-b border-dark-500/50 bg-neutral-950/80 backdrop-blur-xl">
@@ -110,6 +136,41 @@ export default function LoginPage() {
           </div>
         </footer>
       </div>
+
+      {/* Modal: account not funded on testnet */}
+      <Modal
+        open={!!fundModal}
+        onOpenChange={(open) => {
+          if (!open && fundModal) handleFundChoice("cancel");
+        }}
+      >
+        <ModalContent>
+          <ModalHeader>
+            <ModalTitle>Account not found on Stellar testnet</ModalTitle>
+            <ModalDescription>
+              This address does not exist on Stellar testnet yet. Would you like
+              to fund it with test XLM via Friendbot? This will create the
+              account and add 10,000 test lumens for development.
+            </ModalDescription>
+          </ModalHeader>
+          {fundModal && (
+            <p className="font-mono text-body-sm text-text-secondary break-all">
+              {fundModal.address}
+            </p>
+          )}
+          <ModalFooter>
+            <Button
+              variant="outline"
+              onClick={() => handleFundChoice("cancel")}
+            >
+              Cancel
+            </Button>
+            <Button onClick={() => handleFundChoice("fund")}>
+              Fund account
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </WalletProvider>
   );
 }
