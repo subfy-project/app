@@ -15,7 +15,7 @@ import {
 } from "@subfy/ui";
 import { WalletProvider, useWallet } from "@/lib/wallet";
 import { ConnectWalletButton } from "@/components/connect-wallet-button";
-import { ChevronDown, Loader2, Plus } from "lucide-react";
+import { ChevronDown, Loader2, LogOut, Plus } from "lucide-react";
 import { ProjectProvider, useProjects } from "@/lib/projects/context";
 import { useToast } from "@/components/toast-provider";
 import { toDisplayError } from "@/lib/errors";
@@ -29,7 +29,7 @@ function CreateProjectModal({
   forceOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }) {
-  const { publicKey } = useWallet();
+  const { publicKey, disconnect } = useWallet();
   const { creatingProject, createError, createAndDeployProject } = useProjects();
   const [name, setName] = useState("");
   const [treasuryAddress, setTreasuryAddress] = useState("");
@@ -171,7 +171,18 @@ function CreateProjectModal({
           )}
 
           <ModalFooter>
-            {!forceOpen && (
+            {forceOpen ? (
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={() => void disconnect()}
+                disabled={creatingProject}
+                className="mr-auto text-text-secondary hover:text-red-400"
+              >
+                <LogOut className="size-4" />
+                Disconnect
+              </Button>
+            ) : (
               <Button
                 type="button"
                 variant="outline"
