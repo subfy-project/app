@@ -33,11 +33,13 @@ import {
 import { useWallet } from "@/lib/wallet";
 import { useToast } from "@/components/toast-provider";
 import { toDisplayError } from "@/lib/errors";
+import { useXlmPrice } from "@/lib/xlm-price";
 
 const PAGE_SIZE = 9;
 const LEDGERS_PER_DAY = 17_280;
 const LEDGERS_PER_MINUTE = 12;
 const DAYS_PER_MONTH = 30;
+const STROOPS_PER_UNIT = 10_000_000; // 1 USDC/EURC = 10^7 stroops on Stellar
 
 function formatPeriodFromLedgers(ledgers: number): string {
   if (!Number.isFinite(ledgers) || ledgers <= 0) return "-";
@@ -175,6 +177,7 @@ export default function PlansPage() {
   const { token } = useWallet();
   const { showToast } = useToast();
   const { selectedProject } = useProjects();
+  const { priceUsd: xlmPriceUsd, loading: xlmPriceLoading } = useXlmPrice();
   const [currentPage, setCurrentPage] = useState(1);
   const [plans, setPlans] = useState<ContractPlan[]>([]);
   const [loading, setLoading] = useState(false);
@@ -186,7 +189,7 @@ export default function PlansPage() {
   const [periodMonths, setPeriodMonths] = useState("0");
   const [periodDays, setPeriodDays] = useState("0");
   const [periodMinutes, setPeriodMinutes] = useState("0");
-  const [priceStroops, setPriceStroops] = useState("");
+  const [priceCurrency, setPriceCurrency] = useState("");
 
   const loadPlans = useCallback(async () => {
     if (!token || !selectedProject?.id || !selectedProject.subscriptionContractId) {
@@ -214,6 +217,16 @@ export default function PlansPage() {
   useEffect(() => {
     void loadPlans();
   }, [loadPlans]);
+
+  /* Pre-fill next plan ID when create modal opens */
+  useEffect(() => {
+    if (createOpen && plans.length > 0) {
+      const maxId = Math.max(...plans.map((p) => p.id), 0);
+      setPlanId(String(maxId + 1));
+    } else if (createOpen) {
+      setPlanId("1");
+    }
+  }, [createOpen, plans]);
 
   const totalPages = Math.max(1, Math.ceil(plans.length / PAGE_SIZE));
   const paginated = useMemo(
@@ -272,6 +285,22 @@ export default function PlansPage() {
       return;
     }
 
+    const priceNum = parseFloat(priceCurrency) || 0;
+    if (priceNum <= 0) {
+      const displayError = "Price must be greater than 0";
+      setError(displayError);
+      showToast({
+        title: "Invalid price",
+        description: displayError,
+        variant: "error",
+      });
+      return;
+    }
+
+    const priceStroops = String(
+      Math.round(priceNum * STROOPS_PER_UNIT),
+    );
+
     setCreateLoading(true);
     setError(null);
     try {
@@ -287,7 +316,7 @@ export default function PlansPage() {
       setPeriodMonths("0");
       setPeriodDays("0");
       setPeriodMinutes("0");
-      setPriceStroops("");
+      setPriceCurrency("");
       await loadPlans();
       showToast({
         title: "Plan created",
@@ -347,65 +376,119 @@ export default function PlansPage() {
               </ModalDescription>
             </ModalHeader>
             <form className="flex flex-col gap-4" onSubmit={onCreatePlan}>
-              <Input
-                placeholder="Plan ID (e.g. 1)"
-                value={planId}
-                onChange={(event) => setPlanId(event.target.value)}
-                disabled={createLoading}
-              />
-              <Input
-                placeholder="Plan name (e.g. Starter)"
-                value={planName}
-                onChange={(event) => setPlanName(event.target.value)}
-                disabled={createLoading}
-              />
-              <div className="grid grid-cols-3 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <label className="font-inter text-[14px] font-semibold text-text-primary">
+                  Plan ID
+                </label>
+                <p className="rounded-lg border border-dark-500 bg-neutral-900 px-4 py-3 font-outfit text-[16px] text-text-secondary">
+                  {planId || "—"}
+                </p>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="font-inter text-[14px] font-semibold text-text-primary">
+                  Plan name
+                </label>
                 <Input
-                  type="number"
-                  min={0}
-                  placeholder="Months"
-                  value={periodMonths}
-                  onChange={(event) => setPeriodMonths(event.target.value)}
-                  disabled={createLoading}
-                />
-                <Input
-                  type="number"
-                  min={0}
-                  placeholder="Days"
-                  value={periodDays}
-                  onChange={(event) => setPeriodDays(event.target.value)}
-                  disabled={createLoading}
-                />
-                <Input
-                  type="number"
-                  min={0}
-                  placeholder="Minutes"
-                  value={periodMinutes}
-                  onChange={(event) => setPeriodMinutes(event.target.value)}
+                  placeholder="e.g. Starter"
+                  value={planName}
+                  onChange={(event) => setPlanName(event.target.value)}
                   disabled={createLoading}
                 />
               </div>
-              <p className="text-xs text-text-secondary">
-                Renewal every{" "}
-                {Math.max(
-                  0,
-                  Number(periodMonths || "0") * DAYS_PER_MONTH + Number(periodDays || "0"),
-                )}{" "}
-                day(s) and {Math.max(0, Number(periodMinutes || "0"))} minute(s) (
-                {Math.max(
-                  0,
-                  Number(periodMonths || "0") * DAYS_PER_MONTH + Number(periodDays || "0"),
-                ) *
-                  LEDGERS_PER_DAY +
-                  Math.max(0, Number(periodMinutes || "0")) * LEDGERS_PER_MINUTE}{" "}
-                ledgers)
-              </p>
-              <Input
-                placeholder="Price in stroops (e.g. 10000000)"
-                value={priceStroops}
-                onChange={(event) => setPriceStroops(event.target.value)}
-                disabled={createLoading}
-              />
+              <div className="flex flex-col gap-1.5">
+                <span className="font-inter text-[14px] font-semibold text-text-primary">
+                  Period
+                </span>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-inter text-[12px] font-medium text-text-secondary">
+                      Months
+                    </label>
+                    <Input
+                      type="number"
+                      min={0}
+                      placeholder="0"
+                      value={periodMonths}
+                      onChange={(event) => setPeriodMonths(event.target.value)}
+                      disabled={createLoading}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-inter text-[12px] font-medium text-text-secondary">
+                      Days
+                    </label>
+                    <Input
+                      type="number"
+                      min={0}
+                      placeholder="0"
+                      value={periodDays}
+                      onChange={(event) => setPeriodDays(event.target.value)}
+                      disabled={createLoading}
+                    />
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="font-inter text-[12px] font-medium text-text-secondary">
+                      Minutes
+                    </label>
+                    <Input
+                      type="number"
+                      min={0}
+                      placeholder="0"
+                      value={periodMinutes}
+                      onChange={(event) => setPeriodMinutes(event.target.value)}
+                      disabled={createLoading}
+                    />
+                  </div>
+                </div>
+                <p className="text-xs text-text-secondary">
+                  Renewal every{" "}
+                  {Math.max(
+                    0,
+                    Number(periodMonths || "0") * DAYS_PER_MONTH +
+                      Number(periodDays || "0"),
+                  )}{" "}
+                  day(s) and {Math.max(0, Number(periodMinutes || "0"))} minute(s) (
+                  {Math.max(
+                    0,
+                    Number(periodMonths || "0") * DAYS_PER_MONTH +
+                      Number(periodDays || "0"),
+                  ) *
+                    LEDGERS_PER_DAY +
+                    Math.max(0, Number(periodMinutes || "0")) * LEDGERS_PER_MINUTE}{" "}
+                  ledgers)
+                </p>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="font-inter text-[14px] font-semibold text-text-primary">
+                  Price ({selectedProject?.paymentCurrency ?? "USDC"})
+                </label>
+                <Input
+                  type="number"
+                  min={0}
+                  step="0.01"
+                  placeholder={`e.g. 10.00`}
+                  value={priceCurrency}
+                  onChange={(event) => setPriceCurrency(event.target.value)}
+                  disabled={createLoading}
+                />
+                {priceCurrency && parseFloat(priceCurrency) > 0 ? (
+                  <p className="text-xs text-text-secondary">
+                    {xlmPriceLoading ? (
+                      "Loading XLM price..."
+                    ) : xlmPriceUsd && xlmPriceUsd > 0 ? (
+                      <>
+                        ≈{" "}
+                        {(
+                          (parseFloat(priceCurrency) || 0) / xlmPriceUsd
+                        ).toFixed(2)}{" "}
+                        XLM (estimated, 1 XLM ≈ ${xlmPriceUsd.toFixed(2)})
+                      </>
+                    ) : (
+                      "XLM price unavailable"
+                    )}
+                  </p>
+                ) : null}
+              </div>
               <ModalFooter>
                 <Button type="submit" variant="primary" disabled={createLoading}>
                   {createLoading ? (

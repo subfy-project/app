@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
+import Link from "next/link";
 import {
   PageHeader,
   Separator,
@@ -11,11 +12,17 @@ import {
   Button,
   Input,
 } from "@subfy/ui";
+import { ExternalLink } from "lucide-react";
 import { useProjects } from "@/lib/projects/context";
 import { useWallet } from "@/lib/wallet";
 import { renameProject } from "@/lib/api/projects";
 import { useToast } from "@/components/toast-provider";
 import { toDisplayError } from "@/lib/errors";
+
+function contractExplorerUrl(network: string, contractId: string): string {
+  const segment = network === "public" ? "public" : "testnet";
+  return `https://stellar.expert/explorer/${segment}/contract/${contractId}`;
+}
 
 export default function SettingsPage() {
   const { token } = useWallet();
@@ -111,11 +118,41 @@ export default function SettingsPage() {
               </p>
               <p>
                 <span className="text-text-primary">Subscription contract:</span>{" "}
-                {selectedProject.subscriptionContractId ?? "-"}
+                {selectedProject.subscriptionContractId ? (
+                  <Link
+                    href={contractExplorerUrl(
+                      selectedProject.network,
+                      selectedProject.subscriptionContractId,
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-main-400 hover:text-main-500"
+                  >
+                    {selectedProject.subscriptionContractId}
+                    <ExternalLink className="size-3.5 shrink-0" />
+                  </Link>
+                ) : (
+                  "-"
+                )}
               </p>
               <p>
                 <span className="text-text-primary">Payment token contract:</span>{" "}
-                {selectedProject.paymentTokenContractId ?? "-"}
+                {selectedProject.paymentTokenContractId ? (
+                  <Link
+                    href={contractExplorerUrl(
+                      selectedProject.network,
+                      selectedProject.paymentTokenContractId,
+                    )}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-main-400 hover:text-main-500"
+                  >
+                    {selectedProject.paymentTokenContractId}
+                    <ExternalLink className="size-3.5 shrink-0" />
+                  </Link>
+                ) : (
+                  "-"
+                )}
               </p>
               <p>
                 <span className="text-text-primary">Treasury:</span>{" "}
