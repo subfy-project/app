@@ -15,6 +15,7 @@ import {
 } from "@subfy/ui";
 import { WalletProvider, useWallet } from "@/lib/wallet";
 import { ConnectWalletButton } from "@/components/connect-wallet-button";
+import { DashboardTourTrigger } from "@/components/dashboard-tour";
 import { ChevronDown, Loader2, LogOut, Plus } from "lucide-react";
 import { ProjectProvider, useProjects } from "@/lib/projects/context";
 import { useToast } from "@/components/toast-provider";
@@ -297,12 +298,25 @@ function DashboardInner({ children }: { children: React.ReactNode }) {
       <DashboardLayout
         activeHref={pathname}
         onNavigate={(href) => router.push(href)}
-        userSlot={<ConnectWalletButton />}
+        userSlot={
+          <div className="flex items-center gap-2" data-tour="tour-navbar-wallet">
+            <DashboardTourTrigger />
+            <ConnectWalletButton />
+          </div>
+        }
         sidebarProps={{
-          projectSlot: <SidebarProjectSelector onCreate={() => setCreateModalOpen(true)} />,
+          "data-tour": "tour-sidebar",
+          projectSlot: (
+            <div data-tour="tour-project-selector">
+              <SidebarProjectSelector onCreate={() => setCreateModalOpen(true)} />
+            </div>
+          ),
         }}
       >
-        <div className={shouldBlurContent ? "pointer-events-none blur-sm" : undefined}>
+        <div
+          className={shouldBlurContent ? "pointer-events-none blur-sm" : undefined}
+          data-tour="tour-main-content"
+        >
           {children}
         </div>
       </DashboardLayout>

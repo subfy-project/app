@@ -40,7 +40,10 @@ export default function DashboardOverview() {
       <Separator />
 
       {/* Stat cards — Figma: 2 cols × 2 rows, 112px each, gap 28px */}
-      <div className="grid grid-cols-1 gap-7 sm:grid-cols-2 xl:grid-cols-4">
+      <div
+        className="grid grid-cols-1 gap-7 sm:grid-cols-2 xl:grid-cols-4"
+        data-tour="tour-stat-cards"
+      >
         <StatCard
           icon={Users}
           label="Total Subscribers"
@@ -73,7 +76,7 @@ export default function DashboardOverview() {
       {/* Tables — gap 28px */}
       <div className="grid grid-cols-1 gap-7 lg:grid-cols-2">
         {/* Plans Overview */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden" data-tour="tour-plans-card">
           <CardHeader>
             <CardTitle>
               <LayoutGrid className="size-6 text-main-500" />
@@ -117,7 +120,7 @@ export default function DashboardOverview() {
         </Card>
 
         {/* Memberships Overview */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden" data-tour="tour-memberships-card">
           <CardHeader>
             <CardTitle>
               <Users className="size-6 text-main-500" />

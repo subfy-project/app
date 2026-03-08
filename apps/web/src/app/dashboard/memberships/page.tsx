@@ -161,7 +161,10 @@ export default function MembershipsPage() {
       {error ? <p className="text-sm text-red-300">{error}</p> : null}
 
       {selectedProject ? (
-        <div className="rounded-2xl border border-dark-500 bg-neutral-900 p-4">
+        <div
+          className="rounded-2xl border border-dark-500 bg-neutral-900 p-4"
+          data-tour="tour-memberships-share"
+        >
           <p className="mb-2 font-inter text-sm font-semibold text-text-primary">
             Public subscription link
           </p>
@@ -196,7 +199,10 @@ export default function MembershipsPage() {
         </div>
       ) : null}
 
-      <div className="overflow-hidden rounded-2xl border border-dark-500 bg-neutral-900">
+      <div
+        className="overflow-hidden rounded-2xl border border-dark-500 bg-neutral-900"
+        data-tour="tour-memberships-table"
+      >
         <Table>
           <TableHeader>
             <TableRow>

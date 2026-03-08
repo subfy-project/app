@@ -354,7 +354,7 @@ export default function PlansPage() {
         </p>
       ) : null}
 
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4" data-tour="tour-plans-create">
         <div className="text-sm text-text-secondary">
           {selectedProject ? `Project: ${selectedProject.name}` : "No project selected"}
         </div>
@@ -509,7 +509,10 @@ export default function PlansPage() {
       {error ? <p className="text-sm text-red-300">{error}</p> : null}
 
       {/* Table card */}
-      <div className="overflow-hidden rounded-2xl border border-dark-500 bg-neutral-900">
+      <div
+        className="overflow-hidden rounded-2xl border border-dark-500 bg-neutral-900"
+        data-tour="tour-plans-table"
+      >
         <Table>
           <TableHeader>
             <TableRow>

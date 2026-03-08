@@ -77,7 +77,7 @@ export default function SettingsPage() {
         <p className="text-sm text-text-secondary">Select a project first.</p>
       ) : (
         <>
-          <Card>
+          <Card data-tour="tour-settings-project">
             <CardHeader>
               <CardTitle>Project information</CardTitle>
             </CardHeader>
@@ -98,7 +98,7 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card data-tour="tour-settings-contract">
             <CardHeader>
               <CardTitle>Contract information</CardTitle>
             </CardHeader>

@@ -4,34 +4,29 @@
 
 ## Overview
 
-Subfy is a decentralized subscription management protocol built on the Stellar network (Soroban). It enables businesses to seamlessly accept recurring cryptocurrency payments without relying on centralized intermediaries or manual monthly transfers. Think of it as "Stripe for Crypto"—bringing the familiar subscription economy to Web3.
+Subfy is a decentralized subscription management protocol designed to bridge the gap between traditional SaaS business models and the Web3 economy. It leverages the speed, low cost, and smart contract capabilities of the Stellar network (Soroban) to provide plug-and-play infrastructure for businesses to automate, manage, and scale their subscription services using digital assets—without relying on centralized intermediaries or manual monthly transfers. Think of it as **"Stripe for Crypto"** on Stellar.
 
 ## The Problem
 
-Today's crypto payment landscape is predominantly transactional (one-off transfers). Businesses that want to accept crypto for subscriptions face two major challenges:
+Today, thousands of companies rely on recurring revenue, but the crypto payment landscape is predominantly transactional (one-off). For a business to accept crypto for a monthly plan, they usually face two hurdles:
 
-1. **User Friction**: Customers must manually approve transactions every month, leading to high churn rates
-2. **Integration Gap**: Merchants lack a unified dashboard to manage subscriptions, track subscribers, and automate renewals on-chain
+1. **User Friction:** Users must remember to sign a transaction every month, leading to high churn rates.
+2. **Integration Gap:** Merchants lack a unified dashboard to manage allowances, track subscriber lifecycles, and handle automatic renewals on-chain.
 
-Subfy solves this by providing plug-and-play infrastructure for automated, recurring payments using digital assets on Stellar.
+Subfy solves this by creating a familiar subscription experience on Stellar, allowing businesses to implement recurring logic (weekly, monthly, or yearly) with minimal integration effort.
 
 ## Why Stellar?
 
-Stellar is the ideal blockchain for subscription payments:
+Stellar was built for payments, making it the ideal foundation for a subscription-based protocol:
 
-- **Built for Payments**: Stellar's core DNA is optimized for real-world value transfer
-- **Soroban Smart Contracts**: Enable complex billing logic with deterministic execution
-- **Stablecoin Support**: Deep integration with USDC, EURC, and other regulated assets ensures price stability for business operations
-- **Near-Zero Fees**: Transactions cost pennies, making even micro-subscriptions ($1/week) economically viable
-- **Fast Settlement**: 5-second confirmation times ensure rapid transaction finality
+- **Optimized for Real-World Assets & Stablecoins:** Deep integration with USDC, EURC, and global anchors ensures price stability for business operations.
+- **Soroban Smart Contracts:** Enables the complex logic required for recurring billing and "pull-payment" authorizations.
+- **Unrivaled Efficiency:** Near-zero fees and 5-second settlement times make even micro-subscriptions (e.g., $1/week) economically feasible.
 
-## Key Features
+## Documentation
 
-- **Pull-Payment Architecture**: Users grant time-bound authorizations for automated recurring transfers
-- **Non-Custodial**: Users maintain full control—no funds locked in smart contracts
-- **Merchant Dashboard**: Real-time tracking of subscription metrics and subscriber lifecycle management
-- **Standard Token Support**: Direct integration with native Stellar assets (USDC, EURC, etc.)
-- **Wallet Integration**: Works seamlessly with Freighter and Lobstr wallets
+- **[Full project description](docs/description.md)** — Executive summary, vision, problem statement, why Stellar, integration & architecture, value to the ecosystem.
+- **[Technical architecture](docs/technical-architecture.md)** — Component diagrams, Soroban contract focus, runtime flows, and deployment view.
 
 ## Project Structure
 
