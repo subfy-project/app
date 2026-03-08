@@ -32,6 +32,8 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   onNavigate?: (href: string) => void;
   mobileOpen?: boolean;
   onMobileClose?: () => void;
+  /** For guided tour targeting (e.g. data-tour="tour-sidebar") */
+  "data-tour"?: string;
 }
 
 /* ── Default nav items ────────────────────────────────── */
